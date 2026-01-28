@@ -69,3 +69,4 @@ paths:
           description: Lista de documentos retornada com sucesso. Inclui a URL para visualização.
         '500':
           description: Erro interno do servidor
+    
