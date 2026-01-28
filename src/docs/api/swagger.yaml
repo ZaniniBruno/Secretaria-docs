@@ -1,0 +1,71 @@
+openapi: 3.0.0
+info:
+  title: API de Gestão de Documentos - Secretaria
+  description: API para upload obrigatório de pacote de documentos e gestão de status.
+  version: 1.1.0
+servers:
+  - url: http://localhost:3000/api
+    description: Servidor Local
+paths:
+  /documentos/upload:
+    post:
+      summary: Realiza o upload obrigatório de todos os documentos do aluno
+      tags:
+        - Documentos
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - userId
+                - cpf
+                - rg
+                - comprovante
+                - historico
+              properties:
+                userId:
+                  type: string
+                  description: ID do usuário dono dos documentos
+                cpf:
+                  type: string
+                  format: binary
+                  description: Arquivo do CPF
+                rg:
+                  type: string
+                  format: binary
+                  description: Arquivo do RG
+                comprovante:
+                  type: string
+                  format: binary
+                  description: Arquivo do Comprovante de Residência
+                historico:
+                  type: string
+                  format: binary
+                  description: Arquivo do Histórico Escolar
+      responses:
+        '201':
+          description: Pacote de documentos enviado com sucesso
+        '400':
+          description: Erro na requisição (arquivos ausentes)
+        '500':
+          description: Erro interno do servidor
+
+  /documentos:
+    get:
+      summary: Lista todos os documentos ou filtra por usuário
+      tags:
+        - Documentos
+      parameters:
+        - name: userId
+          in: query
+          required: false
+          schema:
+            type: string
+          description: ID do usuário para filtrar
+      responses:
+        '200':
+          description: Lista de documentos retornada com sucesso. Inclui a URL para visualização.
+        '500':
+          description: Erro interno do servidor
